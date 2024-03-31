@@ -36,8 +36,7 @@ class Net_embed(nn.Module):
 
     def __init__(self,input_dim = 768,hidden_dim = 128,out_dim = 16,drop_prob = 0.3):
         super(Net_embed, self).__init__()
-        # 1 input image channel, 6 output channels, 5x5 square convolution
-        # kernel
+        
         self.fc1 = nn.Linear(input_dim,hidden_dim)
         self.fc2 = nn.Linear(hidden_dim,out_dim)
         self.bn = nn.BatchNorm1d(hidden_dim)
