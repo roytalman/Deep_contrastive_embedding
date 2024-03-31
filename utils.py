@@ -7,29 +7,31 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-def plot_tsne(data,labels,title= 'T-sne'):
-    tsne = TSNE(n_components=2, learning_rate='auto',init='random', perplexity=5,random_state=2)
-    z = tsne.fit_transform(data) 
-    df = pd.DataFrame(columns=['t-sne1','t-sne2','label'])
-    df['t-sne1'] = z[:,0]
-    df['t-sne2'] = z[:,1]
+def plot_tsne(data, labels, title='T-sne'):
+    tsne = TSNE(n_components=2, learning_rate='auto', init='random', perplexity=5, random_state=2)
+    z = tsne.fit_transform(data)
+    df = pd.DataFrame(columns=['t-sne1', 't-sne2', 'label', 'size'])
+    df['t-sne1'] = z[:, 0]
+    df['t-sne2'] = z[:, 1]
     df['label'] = labels
-    # plot tsne
-
-    sizes = np.ones(df.shape[0])*70
-    sizes[labels== 1] = 100
-    plt.figure(figsize=(16,10))
+    
+    # Assign sizes; create a new column for sizes
+    df['size'] = np.ones(df.shape[0]) * 70  # Default size
+    df.loc[df['label'] == 1, 'size'] = 100  # Increase size for label==1
+    
+    plt.figure(figsize=(16, 10))
     sns.scatterplot(
         x='t-sne1', y='t-sne2',
         hue="label",
+        size="size",  # Use the 'size' column for varying sizes
+        sizes=(70, 100),  # Specify the range of sizes
         data=df,
         legend="full",
-        palette="deep",\
-        s = sizes
-    , hue_norm=(0, 7) )
-
+        palette="deep"
+    )
+    
     plt.title(title)
-
+    plt.show()
     
     
 class Net_embed(nn.Module):
