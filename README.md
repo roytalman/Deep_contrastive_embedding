@@ -1,5 +1,5 @@
 # Embedding_Contrastive
-Deep supervised (or semi-supervised) contrastive learning for small datasets (few shot learning).
-This repository takes labeled embedding data, that could be extracted from pre-trained NLP, vision, or any other algorithm that extract embedding,
-and use deep FFN to learn new embedding that is fine-tuned for your subset of classes and data. 
-This algorithm can improve classification performance even for small amount of data-per class.
+This repository focuses on deep supervised (or semi-supervised) contrastive learning for limited datasets, such as few-shot learning scenarios.
+It utilizes labeled embedding data, which can be derived from pre-trained NLP, vision, or other algorithms capable of extracting embeddings.
+By applying deep feedforward networks (FFN), the approach refines new embeddings specifically tailored to a subset of classes and data.
+This technique enhances classification accuracy, even with a small number of data points per class.
