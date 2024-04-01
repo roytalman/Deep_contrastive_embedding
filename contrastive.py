@@ -10,8 +10,8 @@ class Contrastive_loss():
         self.margin = margin
         
     def __call__(self,x,labels):
-        # x      - n*m matrix where n is barch size and m is embedding size
-        # labels - m vector of labels
+        # x      - n*m embedding matrix where n is batch size and m is embedding size
+        # labels - m vector of labels. If you dont have limited number of class, but only positive paires, you can pass each pair with different label.
         
         # calculate n*n cosine similarity matrix 
         cos_sim = F.cosine_similarity(x,x.unsqueeze(1),dim=2)
