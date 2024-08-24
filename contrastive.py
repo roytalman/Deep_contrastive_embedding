@@ -6,6 +6,11 @@ import torch.nn.functional as F
 
 class Contrastive_loss():
     
+    # loss equation is sum(Cn - Cp + M).
+    # Where Cn  is the cosine similarity of negative paires (different labels)
+    #       Cp is the cosine similarty of positive paires (same labels)
+    #   and M is the mergin 
+    
     def __init__(self,margin = 0.4):
         self.margin = margin
         
@@ -17,10 +22,10 @@ class Contrastive_loss():
         cos_sim = F.cosine_similarity(x,x.unsqueeze(1),dim=2)
         # remove diagonal values (self cosine equal to 1 )
         cos_sim_no_diag  = cos_sim.flatten()[:-1].view(len(labels)-1,len(labels)+1)[:,1:].flatten()
-        # vector eqvivalent to 'cos_sim_no_diag' of same label or different label
+        # binary vector eqvivalent to 'cos_sim_no_diag' of same/other label
         labels_equal  = (labels == labels.unsqueeze(1)).flatten()[:-1].view(len(labels)-1,len(labels)+1)[:,1:].flatten()
         
-        # find same label cosine and different label cosine
+        # find same label paires and different label paires
         pos_cos  = cos_sim_no_diag[labels_equal]
         neg_cos  = cos_sim_no_diag[~labels_equal]
         
@@ -30,4 +35,4 @@ class Contrastive_loss():
         neg_cos_select =  neg_cos[np.random.choice(len(neg_cos),L, replace=False)]
         # calculate embedding pair loss:
         loss_all = torch.max( neg_cos_select - pos_cos_select + self.margin, torch.zeros(L) )
-        return loss_all.mean()
+        return loss_all.mean()/L
